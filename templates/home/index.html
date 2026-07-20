@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
+{% endblock css %}
+
+{% block js %}
+    <script type="module" src="{% static 'js/index.js' %}"></script>
+{% endblock js %}
+
+{% block content %}
+
+    <div>Hello World</div>
+
+{% endblock content %}

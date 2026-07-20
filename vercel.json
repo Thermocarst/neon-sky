@@ -1,0 +1,11 @@
+{
+	"routes": [
+		{
+		"src": "/(.*)",
+		"dest": "api/wsgi.py"
+		}
+	],
+	"$schema": "https://openapi.vercel.sh/vercel.json",
+	"regions": ["fra1"]
+}
+
