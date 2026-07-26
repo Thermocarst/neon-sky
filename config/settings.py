@@ -28,7 +28,6 @@ SECRET_KEY = os.environ.get("PROMPTS_SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get("PROMPTS_DEBUG") == "1"
-print(os.environ.get("PROMPTS_DEBUG") == "1", "qq")
 
 ALLOWED_HOSTS = ["127.0.0.1", "localhost", ".vercel.app"]
 
