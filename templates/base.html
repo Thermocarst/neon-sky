@@ -12,7 +12,7 @@
     {% endblock js %}
     
     <title>
-        {% block title %}{% endblock %}
+        {% block title %}{% endblock title %}
     </title>
 </head>
 <body>
@@ -21,9 +21,12 @@
 
     {% endblock %}
     </section>
+    <div class="separator"></div>
     <footer>
-        <div class="separator"></div>
+        
+        <div class="response-download hidden" id="rd"></div>
+        
     </footer>
-    <div class="response-download hidden" id="rd"></div>
+    
 </body>
 </html>

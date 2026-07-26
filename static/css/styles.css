@@ -1,33 +1,230 @@
 
 :root {
-    --main-text-clr: rgb(158, 220, 251);
     --side-padding: 0 2%;
     --footer-height: 70px;
+
+    --main-text-clr: #9edcfb;
+    --light-text: #b9faff;
+    --dark-text: #06064e;
+
+    --br: 4px;
+    --gap: 5px;
 }
 
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    font-family: "pacifico", "sens-serif";
+    letter-spacing: 0.25rem;
+    font-size: 1.1rem;
+}
+
+@font-face {
+    font-family: "pacifico";
+    src: url("../fonts/pacifico/Pacifico-Regular.ttf");
+    font-weight: normal;
+    font-style: normal;
+}
+
+.response-download {
+    position: fixed;
+    top: calc(100vh - var(--footer-height));
+    background: linear-gradient(90deg, var(--main-text-clr) 0%, var(--dark-text) 50%, var(--main-text-clr) 100%);
+    background-size: 200% 100%;
+    animation: shimmer 2s infinite ease-in-out;
+    width: 96%;
+    height: 10px;
+    z-index: 2;
 }
 
 body {
-    background: linear-gradient(45deg, rgb(28, 5, 95), rgb(5, 91, 157));
+    background: linear-gradient(135deg, rgb(4, 4, 45), rgb(6, 70, 119), white);
     padding: var(--side-padding);
 }
 
 .content {
     height: calc(100vh - var(--footer-height));
     color: var(--main-text-clr);
+    padding: 5px 0;
+    display: flex;
+    justify-content: space-between;
+    line-height: 35px;
 }
 
 footer {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
     height: var(--footer-height);
     width: 100%;
+    z-index: 2;
 }
 
 .separator {
     background-color: var(--main-text-clr);
     width: 100%;
     height: 1px;
+}
+
+textarea {
+    outline: none;
+    border: none;
+    border-radius: var(--br);
+    background: linear-gradient(90deg, transparent, var(--main-text-clr));
+    float: right;
+    height: auto;
+    width: 75%;
+    text-align: end;
+    padding: 2px 15px;
+    resize: vertical;
+}
+
+button {
+    height: 35px;
+    width: 100%;
+    margin: 35px 0 10px 0;
+    border: 0;
+    border-radius: var(--br);
+    cursor: pointer;
+}
+
+.block-inputs, 
+ .block-result {
+    border-top: var(--main-text-clr) 1px solid;
+    border-bottom: var(--main-text-clr) 1px solid;
+    height: 100%;
+    width: calc(50% - 2.5px);
+}
+
+.block-inputs {
+    border-right: var(--main-text-clr) 1px solid;
+    border-top-right-radius: var(--br);
+    border-bottom-right-radius: var(--br);
+    padding: 35px 2% 15px 0;
+}
+
+.block-result {
+    border-left: var(--main-text-clr) 1px solid;
+    border-top-left-radius: var(--br);
+    border-bottom-left-radius: var(--br);
+    padding: 35px 0 15px 2%;
+}
+
+.block-inputs-container,
+ .block-result-container {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap);
+    width: 100%;
+    height: 100%;
+    overflow-y: scroll;
+}
+
+.get-btn {
+    background-color: var(--light-text);
+    color: var(--dark-text);
+}
+
+.back-btn {
+    display: none;
+    background-color: var(--dark-text);
+    color: var(--light-text);
+}
+
+.title {
+    width: 50%;
+    color: var(--light-text);
+}
+
+.input-box {
+    position: relative;
+}
+
+.icon {
+    width: 35px;
+    height: 35px;
+    cursor: pointer;
+}
+
+.input-icon {
+    position: absolute;
+    top: 50%;
+    left: 25%;
+    transition: 0.3s ease-in;
+    opacity: 0;
+}
+
+.copy-icon {
+    float: right;
+    margin-top: 9px;
+}
+
+.text {
+    position: relative;
+    padding: 10px 0 10px 15px;
+    color: var(--dark-text);
+    background: linear-gradient(90deg, var(--main-text-clr), transparent);
+    border-radius: var(--br);
+    margin-bottom: 35px;
+}
+
+.text p {
+    padding-bottom: 10px;
+}
+
+.fade {
+    opacity: 0;
+}
+
+.hidden {
+    display: none;
+}
+
+@media(max-width: 768px) {
+    * {
+        font-size: 1rem;
+    }
+
+    .content {
+        flex-direction: column;
+        height: auto;
+    }
+
+    .block-inputs, 
+     .block-result {
+        padding-top: 50px;
+        width: 100%;
+        padding: 35px 2% 10px 2%;
+    }
+
+    .block-result {
+        display: none;
+        margin-top: 5px;
+    }
+
+    .title {
+        width: 100%;
+    }
+
+    .block-inputs-container {
+        height: 100%;
+    }
+
+    button {
+        margin-bottom: 0;
+    }
+
+    .back-btn {
+        display: block;
+    }
+}
+
+@keyframes shimmer {
+    0% {
+        background-position: 200% 0;
+    } 100% {
+        background-position: -200% 0;
+    }    
 }

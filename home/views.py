@@ -1,5 +1,6 @@
 from django.shortcuts import render
 
+from home.utils import AbstractObject, GeneratedImagePrompt
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
@@ -17,8 +18,10 @@ class HomeView:
 
     @api_view(["POST"])
     @staticmethod
-    def post_prompts(request):
+    def post(request):
         logger.debug("started")
-        data = {}
+        data = request.data
+        prompt = AbstractObject(**data)
+        result: list[str] = GeneratedImagePrompt.formatted_output(prompt=prompt)
         logger.debug("finished, status=success")
-        return Response(data=data, status=status.HTTP_200_OK)
+        return Response(data=result, status=status.HTTP_200_OK)
