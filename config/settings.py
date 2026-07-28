@@ -165,7 +165,7 @@ LANGUAGES = [
 
 # Define where translation files (.po and .mo) will be stored
 LOCALE_PATHS = [
-    BASE_DIR / 'locale',
+    os.path.join(BASE_DIR, 'locale'),
 ]
 
 # Static files (CSS, JavaScript, Images)
