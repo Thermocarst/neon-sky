@@ -18,12 +18,16 @@ from django.contrib import admin
 from django.urls import path, include, re_path
 from django.contrib.staticfiles import views
 from django.conf.urls.static import static
+from django.conf.urls.i18n import i18n_patterns
 from config.settings import MEDIA_URL, MEDIA_ROOT, DEBUG
 
 urlpatterns = [
+    path('i18n/', include('django.conf.urls.i18n')),
+] + i18n_patterns(
     path('admin/', admin.site.urls),
     path("", include("home.urls")),
-] + static(MEDIA_URL, document_root=MEDIA_ROOT)
+    prefix_default_language=True   
+) + static(MEDIA_URL, document_root=MEDIA_ROOT)
 
 if DEBUG:
     # import debug_toolbar

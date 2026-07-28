@@ -1,0 +1,19 @@
+{% load static %}
+{% load i18n %}
+ 
+<div class="language" id="language">
+    {% get_current_language as LANGUAGE_CODE %}
+    {% get_available_languages as LANGUAGES %}
+    {% get_language_info_list for LANGUAGES as langs %}
+    
+    <img class="language-icon" id="language-icon" src="{% static 'icons/arrow-down.svg' %}"/>
+    <div>{{ LANGUAGE_CODE }}</div>
+    
+    <ul class="language-list" id="language-list">
+    {% for lang in langs %}
+        <li data-lang class="language-item {% if lang.code == LANGUAGE_CODE %}active{% endif %}">
+            {{ lang.code }}
+        </li>
+    {% endfor %}
+    </ul>
+</div>

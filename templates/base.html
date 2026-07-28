@@ -16,15 +16,18 @@
     </title>
 </head>
 <body>
-    <section class="content">
+    <section class="content" id="content">
     {% block content %}
 
     {% endblock %}
     </section>
-    <div class="separator"></div>
+
     <footer>
-        
         <div class="response-download hidden" id="rd"></div>
+        <div class="footer">
+            {% include "_language-dd.html" %}
+            
+        </div>
         
     </footer>
     

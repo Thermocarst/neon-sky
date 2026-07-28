@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
+{% load i18n %}
 
 {% block css %}
     <link rel="stylesheet" href="{% static 'css/styles.css' %}"/>
@@ -17,62 +18,62 @@
     <div class="block-inputs">
         <div class="block-inputs-container" id="bic">
             <div>
-                <div class="title">Main character</div>
+                <div class="title">{% translate "Main character" %}</div>
                 <div class="input-box">
                     <textarea type="text" id="mci" placeholder="young chinese woman"></textarea>
                     <img class="icon input-icon fade hidden" data-clear src="{% static 'icons/close-md.svg' %}"/>
                 </div>
             </div>
             <div>
-                <div class="title">Action</div>
+                <div class="title">{% translate "Action" %}</div>
                 <div class="input-box">
                     <textarea type="text" id="ai" placeholder="holding an umbrella"></textarea>
                     <img class="icon input-icon fade hidden" data-clear src="{% static 'icons/close-md.svg' %}"/>
                 </div>
             </div>
             <div>
-                <div class="title">Details</div>
+                <div class="title">{% translate "Details" %}</div>
                 <div class="input-box">
                     <textarea type="text" id="di" placeholder="wearing in green dress, water droplets fall onto the umbrella"></textarea>
                     <img class="icon input-icon fade hidden" data-clear src="{% static 'icons/close-md.svg' %}"/>
                 </div>
             </div>
             <div>
-                <div class="title">Environment</div>
+                <div class="title">{% translate "Environment" %}</div>
                 <div class="input-box">
                     <textarea type="text" id="ei" placeholder="beside a waterfall and lake"></textarea>
                     <img class="icon input-icon fade hidden" data-clear src="{% static 'icons/close-md.svg' %}"/>
                 </div>
             </div>
             <div>
-                <div class="title">Lighting</div>
+                <div class="title">{% translate "Lighting" %}</div>
                 <div class="input-box">
                     <textarea type="text" id="li" placeholder="golden hour sunset light"></textarea>
                     <img class="icon input-icon fade hidden" data-clear src="{% static 'icons/close-md.svg' %}"/>
                 </div>
             </div>
             <div>
-                <div class="title">Mood / atmosphere</div>
+                <div class="title">{% translate "Mood / atmosphere" %}</div>
                 <div class="input-box">
                     <textarea type="text" id="mi" placeholder="joyfull mood"></textarea>
                     <img class="icon input-icon fade hidden" data-clear src="{% static 'icons/close-md.svg' %}"/>
                 </div>
             </div>
             <div>
-                <div class="title">Art style</div>
+                <div class="title">{% translate "Art style" %}</div>
                 <div class="input-box">
                     <textarea type="text" id="asi" placeholder="photo realistic"></textarea>
                     <img class="icon input-icon fade hidden" data-clear src="{% static 'icons/close-md.svg' %}"/>
                 </div>
             </div>
             <div>
-                <div class="title">Camera angles</div>
+                <div class="title">{% translate "Camera angles" %}</div>
                 <div class="input-box">
                     <textarea type="text" id="cai" placeholder="35mm film photography"></textarea>
                     <img class="icon input-icon fade hidden" data-clear src="{% static 'icons/close-md.svg' %}"/>
                 </div>
             </div>
-            <button class="get-btn" id="gb">Get prompts</button>
+            <button class="get-btn" id="gb">{% translate "Get prompts" %}</button>
         </div>
     </div>
 
@@ -80,6 +81,6 @@
         <div class="block-result-container" id="brc">
             <!-- paste from js -->
         </div>
-        <button class="back-btn" id="bb">Back</button>
+        <button class="back-btn" id="bb">{% translate "Back" %}</button>
     </div>
 {% endblock content %}

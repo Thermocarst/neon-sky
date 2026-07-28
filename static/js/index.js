@@ -38,6 +38,17 @@ function showElement(el) {
     el.classList.remove("hidden");
 }
 
+function animateEl(el, animation, duration=300, easing="ease-in", fill="forwards") {
+    // :param el: HTML element
+    // :param animation: list[object, object] (from, to)
+    // :param duration: int
+    // :param easing: str ("ease-in", "ease-out", etc.)
+    // :param fill: str ("forwards", "backwards")
+    el.animate(animation, 
+        {duration: duration, easing: easing, fill: fill}
+    );
+}
+
 // responseDownload
 const rd = document.getElementById("rd");
 
@@ -58,7 +69,7 @@ async function requestPost(path, data, callbackFunc=console.log, kwargs={}) {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
-            "X-CSRFToken": getCSRFToken("csrftoken")
+            "X-CSRFToken": getCookie("csrftoken")
         },
         body: JSON.stringify(data)
     }).then(response => {
@@ -69,7 +80,7 @@ async function requestPost(path, data, callbackFunc=console.log, kwargs={}) {
     responseDownloadOff();
 }
 
-function getCSRFToken(name) {
+function getCookie(name) {
     // getCSFRToken(name)
     let cookieValue = null;
     if (document.cookie && document.cookie !== '') {
@@ -85,6 +96,8 @@ function getCSRFToken(name) {
     }
     return cookieValue;
 }
+
+const content = document.getElementById("content");
 
 const blockInputsContainer = document.getElementById("bic");
 
@@ -123,9 +136,10 @@ intro(blockInputsContainer);
 function animateCloseBtnOn(icon) {
     // animateOnCloseBtn(icon)
     // :param icon: HTML element <img/>
-    // :global: showElement()
-    icon.animate([{opacity: 0, rotate: "0deg"}, {opacity: 1, rotate: "90deg"}], 
-        {duration: 300, easing: "ease-in", fill: "forwards"});
+    // :global: animateEl(), showElement()
+    animateEl(icon, [{opacity: 0, rotate: "0deg"}, {opacity: 1, rotate: "90deg"}])
+    // icon.animate([{opacity: 0, rotate: "0deg"}, {opacity: 1, rotate: "90deg"}], 
+    //     {duration: 300, easing: "ease-in", fill: "forwards"});
     showElement(icon);
     icon.classList.remove("fade");
 }
@@ -134,8 +148,10 @@ function animateCloseBtnOff(icon) {
     // animateOffCloseBtn(icon)
     // :param icon: HTML element <img/>
     // :global func: hideElement()
-    icon.animate([{opacity: 1, rotate: "90deg"}, {opacity: 0, rotate: "0deg"}], 
-        {duration: 300, easing: "ease-out", fill: "backwards"});
+    animateEl(icon, [{opacity: 1, rotate: "90deg"}, {opacity: 0, rotate: "0deg"}], 
+        300, "ease-out", "backwards")
+    // icon.animate([{opacity: 1, rotate: "90deg"}, {opacity: 0, rotate: "0deg"}], 
+    //     {duration: 300, easing: "ease-out", fill: "backwards"});
     icon.classList.add("fade");
     setTimeout(() => {
         hideElement(icon);
@@ -184,8 +200,9 @@ function animatePasteText(textBlocks) {
     textBlocks.forEach(i => {
         delay += 500;
         setTimeout(() => {
-            i.animate([{opacity: 0}, {opacity: 1}], 
-                {duration: 500, easing: "ease-in", fill: "forwards"})
+            animateEl(i, [{opacity: 0}, {opacity: 1}], 500);
+            // i.animate([{opacity: 0}, {opacity: 1}], 
+            //     {duration: 500, easing: "ease-in", fill: "forwards"})
             showElement(i);
             }, delay
         );
@@ -197,8 +214,9 @@ function animateRemoveText() {
     try {
         const textBlocks = document.querySelectorAll("[data-text]");
         textBlocks.forEach(i => {
-            i.animate([{opacity: 1}, {opacity: 0}], 
-                {duration: 500, easing: "ease-out", fill: "forwards"})
+            animateEl(i, [{opacity: 1}, {opacity: 0}], 500, "ease-out");
+            // i.animate([{opacity: 1}, {opacity: 0}], 
+            //     {duration: 500, easing: "ease-out", fill: "forwards"})
             setTimeout(() => {
                 hideElement(i);
             }, 500)
@@ -230,6 +248,7 @@ function getBtnCallback(data) {
     // :param data: array[str]
     // :global var: blockResultContainer, blockResult, 
     // :global func: animatePasteText(), copyBtnsEventListener(), scrollDown()
+    console.log("qw", data)
     blockResultContainer.innerHTML = data.map(promptToHtml).join("");
     const textBlocks = document.querySelectorAll("[data-text]");
     animatePasteText(textBlocks);
@@ -239,7 +258,7 @@ function getBtnCallback(data) {
     scrollDown(window, document.body.scrollHeight);
 }
 
-getBtn.addEventListener("click", function() {
+getBtn.addEventListener("click", () => {
     const data = {
         "mainCharacter": mainCharacterInput.value ? mainCharacterInput.value : mainCharacterInput.placeholder,
         "action": actionInput.value ? actionInput.value : actionInput.placeholder,
@@ -252,15 +271,55 @@ getBtn.addEventListener("click", function() {
     }
     if(data.mainCharacter) {
         animateRemoveText();
-        requestPost("/api/home/post", data, getBtnCallback);
+        const lang = getCookie("django_language");
+        requestPost(`/${lang}/api/home/post`, data, getBtnCallback);
     } else {
         mainCharacterInput.focus();
-    }  
+    }
 })
 
-backBtn.addEventListener("click", function() {
+backBtn.addEventListener("click", () => {
     scrollUp(window);
-    setTimeout(function() {
+    setTimeout(() => {
         blockResult.style.display = "none";
     }, 600);
+})
+
+// i18n
+const languageBtn = document.getElementById("language");
+const languageArrow = document.getElementById("language-icon");
+const languageList = document.getElementById("language-list");
+const allOption = document.querySelectorAll("[data-lang]");
+allOption.forEach(i => i.addEventListener("click", () => {
+    const lang = i.textContent.trim();
+    const currentLang = languageBtn.textContent.trim().split(" ")[0].trimEnd();
+    console.log(lang, currentLang)
+    if(lang != currentLang) {
+        document.cookie = "django_language=" + lang + ";domain=;path=/";
+        location.href= `/${lang}${window.location.pathname.slice(3, window.location.pathname.length)}`;
+    }
+}))
+
+function hideOnMissClick(e) {
+    // if(!e.target.closest("#language-list")) {
+        console.log("qq")
+    if(!languageList.contains(e.target)) {
+        hideLanguageDD();
+    }
+}
+
+function hideLanguageDD() {
+    languageList.classList.remove("open");
+    animateEl(languageArrow, [{rotate: "0deg"}, {rotate: "180deg"}]);
+    content.removeEventListener("click", hideOnMissClick);
+}
+
+languageBtn.addEventListener("click", () => {
+    if(languageList.classList.contains("open")) {
+        hideLanguageDD();
+    } else {
+        languageList.classList.add("open");
+        animateEl(languageArrow, [{rotate: "-180deg"}, {rotate: "0deg"}]);
+        content.addEventListener("click", hideOnMissClick);
+    }  
 })
