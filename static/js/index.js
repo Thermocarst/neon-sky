@@ -238,7 +238,8 @@ function copyBtnsEventListener(copyBtns) {
         } catch(e) {
             console.log("expected", e);
         }
-        copyText(i.previousElementSibling.textContent);
+        const text = i.parentElement.querySelector("p").textContent;
+        copyText(text);
         i.src = "/static/icons/accept-check-ok-prosess.svg";
         currentCopied = i;
     }));
