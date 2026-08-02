@@ -65,7 +65,11 @@ function responseDownloadOff() {
 async function requestPost(path, data, callbackFunc=console.log, kwargs={}) {
     // requestPost(path, data, callbackFunc=console.log, kwargs={})
     responseDownloadOn();
-    await fetch(path, {
+    let lang = getCookie("django_language");
+    if(!lang) {
+        lang = "en";
+    }
+    await fetch(`/${lang}${path}`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -138,8 +142,6 @@ function animateCloseBtnOn(icon) {
     // :param icon: HTML element <img/>
     // :global: animateEl(), showElement()
     animateEl(icon, [{opacity: 0, rotate: "0deg"}, {opacity: 1, rotate: "90deg"}])
-    // icon.animate([{opacity: 0, rotate: "0deg"}, {opacity: 1, rotate: "90deg"}], 
-    //     {duration: 300, easing: "ease-in", fill: "forwards"});
     showElement(icon);
     icon.classList.remove("fade");
 }
@@ -150,8 +152,6 @@ function animateCloseBtnOff(icon) {
     // :global func: hideElement()
     animateEl(icon, [{opacity: 1, rotate: "90deg"}, {opacity: 0, rotate: "0deg"}], 
         300, "ease-out", "backwards")
-    // icon.animate([{opacity: 1, rotate: "90deg"}, {opacity: 0, rotate: "0deg"}], 
-    //     {duration: 300, easing: "ease-out", fill: "backwards"});
     icon.classList.add("fade");
     setTimeout(() => {
         hideElement(icon);
@@ -201,8 +201,6 @@ function animatePasteText(textBlocks) {
         delay += 500;
         setTimeout(() => {
             animateEl(i, [{opacity: 0}, {opacity: 1}], 500);
-            // i.animate([{opacity: 0}, {opacity: 1}], 
-            //     {duration: 500, easing: "ease-in", fill: "forwards"})
             showElement(i);
             }, delay
         );
@@ -215,8 +213,6 @@ function animateRemoveText() {
         const textBlocks = document.querySelectorAll("[data-text]");
         textBlocks.forEach(i => {
             animateEl(i, [{opacity: 1}, {opacity: 0}], 500, "ease-out");
-            // i.animate([{opacity: 1}, {opacity: 0}], 
-            //     {duration: 500, easing: "ease-out", fill: "forwards"})
             setTimeout(() => {
                 hideElement(i);
             }, 500)
@@ -249,7 +245,6 @@ function getBtnCallback(data) {
     // :param data: array[str]
     // :global var: blockResultContainer, blockResult, 
     // :global func: animatePasteText(), copyBtnsEventListener(), scrollDown()
-    console.log("qw", data)
     blockResultContainer.innerHTML = data.map(promptToHtml).join("");
     const textBlocks = document.querySelectorAll("[data-text]");
     animatePasteText(textBlocks);
@@ -272,8 +267,7 @@ getBtn.addEventListener("click", () => {
     }
     if(data.mainCharacter) {
         animateRemoveText();
-        const lang = getCookie("django_language");
-        requestPost(`/${lang}/api/home/post`, data, getBtnCallback);
+        requestPost(`/api/home/post`, data, getBtnCallback);
     } else {
         mainCharacterInput.focus();
     }
@@ -294,7 +288,6 @@ const allOption = document.querySelectorAll("[data-lang]");
 allOption.forEach(i => i.addEventListener("click", () => {
     const lang = i.textContent.trim();
     const currentLang = languageBtn.textContent.trim().split(" ")[0].trimEnd();
-    console.log(lang, currentLang)
     if(lang != currentLang) {
         document.cookie = "django_language=" + lang + ";domain=;path=/";
         location.href= `/${lang}${window.location.pathname.slice(3, window.location.pathname.length)}`;
@@ -302,8 +295,6 @@ allOption.forEach(i => i.addEventListener("click", () => {
 }))
 
 function hideOnMissClick(e) {
-    // if(!e.target.closest("#language-list")) {
-        console.log("qq")
     if(!languageList.contains(e.target)) {
         hideLanguageDD();
     }
